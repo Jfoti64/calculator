@@ -71,6 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < 3; i++) {
             inputArr.shift();
         }
+        // Round result to 7 decimals
+        result = parseFloat(result.toFixed(7));
         inputArr.unshift(result);
     }
     display.innerHTML = result;
