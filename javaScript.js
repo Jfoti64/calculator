@@ -29,6 +29,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // clear array and variables
+    function clear() {
+        inputArr.length = 0;
+        currentlyDisplayed = '';
+        display.innerHTML = '0';
+        num1 = undefined;
+        num2 = undefined;
+        operator = undefined;
+    }
+
     const display = document.getElementById('display');
     const digits = document.querySelectorAll('.digit');
     const operands = document.querySelectorAll('.operand');
@@ -40,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let operator;
     let result;
     let currentlyDisplayed = '';
-    inputArr = [];
+    inputArr = [0];
 
     digits.forEach(digit => {
         digit.addEventListener('click', () => {
@@ -60,17 +70,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     equalsButton.addEventListener('click', () => {
-        // Do nothing if equals is clicked before operator
-        if (inputArr[1] == undefined) {
+        inputStr = inputArr.join('');
+        // If no symbol has been entered don't continue
+        if (!(inputStr.includes('+') || inputStr.includes('-') || inputStr.includes('X') || inputStr.includes('/'))) {
             return;
         }
+        currentlyDisplayed = '';
+        inputArr = inputStr.split(/([+\-X/])/);
         // If no second digit entered assume second digit is same as first
-        else if (inputArr[2] == undefined) {
+        if (inputArr[2] == undefined && inputArr[1]) {
             inputArr.push((inputArr[0]));
         }
-        currentlyDisplayed = '';
-        inputStr = inputArr.join('');
-        inputArr = inputStr.split(/([+\-X/])/);
         while (inputArr.length > 1) {
             num1 = inputArr[0];
             num2 = inputArr[2];
@@ -93,11 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     clearButton.addEventListener('click', () => {
-        // Clear all data from array
-        inputArr.length = 0;
-        currentlyDisplayed = '';
-        display.innerHTML = '0';
+        clear();
     });
-    
-
 });
