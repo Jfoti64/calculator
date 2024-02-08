@@ -3,7 +3,7 @@
     flex-direction: column;
 }
 
-#digitsAndOperands {
+#digitsAndOperators {
     display: flex;
     flex-direction: row;
 }
@@ -13,7 +13,7 @@
     flex-direction: column;
 }
 
-#operands {
+#operators {
     display: flex;
     flex-direction: column;
 }
