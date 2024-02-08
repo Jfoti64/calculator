@@ -67,6 +67,12 @@ document.addEventListener('DOMContentLoaded', function() {
         num1 = inputArr[0];
         num2 = inputArr[2];
         operator = inputArr[1];
+        // Check if user is deviding by 0
+        if (num2 == 0 && operator == '/') {
+            display.innerHTML = 'Not so fast, buddy';
+            inputArr.length = 0;
+            return;
+        }
         result = operate(num1, num2, operator);
         for (let i = 0; i < 3; i++) {
             inputArr.shift();
