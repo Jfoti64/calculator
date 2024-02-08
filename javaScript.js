@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const digits = document.querySelectorAll('.digit');
     const operands = document.querySelectorAll('.operand');
     const equalsButton = document.getElementById('equalsButton');
+    const clearButton = document.getElementById('clearButton');
 
     digits.forEach(digit => {
         digit.addEventListener('click', () => {
@@ -67,7 +68,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         inputArr.unshift(result);
     }
-    console.log(result);
+    display.innerHTML = result;
+    });
+
+    clearButton.addEventListener('click', () => {
+        // Clear all data from array
+        inputArr.length = 0;
+        display.innerHTML = '0';
     });
     
 
