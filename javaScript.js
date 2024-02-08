@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             num1 = inputArr[0];
             num2 = inputArr[2];
             operator = inputArr[1];
-            // Check if user is deviding by 0
+            // Check if user is dividing by 0
             if (num2 == 0 && operator == '/') {
                 display.innerHTML = 'Not so fast, buddy';
                 inputArr.length = 0;
@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     clearButton.addEventListener('click', () => {
         // Clear all data from array
         inputArr.length = 0;
+        currentlyDisplayed = '';
         display.innerHTML = '0';
     });
     
