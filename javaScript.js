@@ -60,28 +60,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     equalsButton.addEventListener('click', () => {
-    currentlyDisplayed = '';
-    inputStr = inputArr.join('');
-    inputArr = inputStr.split(/([+\-X/])/);
-    while (inputArr.length > 1) {
-        num1 = inputArr[0];
-        num2 = inputArr[2];
-        operator = inputArr[1];
-        // Check if user is deviding by 0
-        if (num2 == 0 && operator == '/') {
-            display.innerHTML = 'Not so fast, buddy';
-            inputArr.length = 0;
+        // Do nothing if equals is clicked before operator
+        if (inputArr[1] == undefined) {
             return;
         }
-        result = operate(num1, num2, operator);
-        for (let i = 0; i < 3; i++) {
-            inputArr.shift();
+        // If no second digit entered assume second digit is same as first
+        else if (inputArr[2] == undefined) {
+            inputArr.push((inputArr[0]));
         }
-        // Round result to 7 decimals
-        result = parseFloat(result.toFixed(7));
-        inputArr.unshift(result);
-    }
-    display.innerHTML = result;
+        currentlyDisplayed = '';
+        inputStr = inputArr.join('');
+        inputArr = inputStr.split(/([+\-X/])/);
+        while (inputArr.length > 1) {
+            num1 = inputArr[0];
+            num2 = inputArr[2];
+            operator = inputArr[1];
+            // Check if user is deviding by 0
+            if (num2 == 0 && operator == '/') {
+                display.innerHTML = 'Not so fast, buddy';
+                inputArr.length = 0;
+                return;
+            }
+            result = operate(num1, num2, operator);
+            for (let i = 0; i < 3; i++) {
+                inputArr.shift();
+            }
+            // Round result to 7 decimals
+            result = parseFloat(result.toFixed(7));
+            inputArr.unshift(result);
+        }
+        display.innerHTML = result;
     });
 
     clearButton.addEventListener('click', () => {
