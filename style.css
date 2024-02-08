@@ -1,0 +1,19 @@
+#outermost {
+    display: flex;
+    flex-direction: column;
+}
+
+#digitsAndOperands {
+    display: flex;
+    flex-direction: row;
+}
+
+#digits {
+    display: flex;
+    flex-direction: column;
+}
+
+#operands {
+    display: flex;
+    flex-direction: column;
+}
