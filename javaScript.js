@@ -29,33 +29,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    let num1;
-    let num2;
-    let operator;
-    let result;
-    inputArr = [];
-
     const display = document.getElementById('display');
     const digits = document.querySelectorAll('.digit');
     const operands = document.querySelectorAll('.operand');
     const equalsButton = document.getElementById('equalsButton');
     const clearButton = document.getElementById('clearButton');
 
+    let num1;
+    let num2;
+    let operator;
+    let result;
+    let currentlyDisplayed = '';
+    inputArr = [];
+
     digits.forEach(digit => {
         digit.addEventListener('click', () => {
-            display.innerHTML = digit.innerHTML;
+            display.innerHTML = '';
+            currentlyDisplayed += digit.innerHTML;
+            display.innerHTML = currentlyDisplayed;
             inputArr.push(digit.innerHTML);
         });
     });
 
     operands.forEach(operand => {
         operand.addEventListener('click', () => {
+            currentlyDisplayed = '';
             display.innerHTML = operand.innerHTML;
             inputArr.push(operand.innerHTML);
         });
     });
     
     equalsButton.addEventListener('click', () => {
+    currentlyDisplayed = '';
     inputStr = inputArr.join('');
     inputArr = inputStr.split(/([+\-X/])/);
     while (inputArr.length > 1) {
