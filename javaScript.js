@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // clear array and variables
+    // Reset array and variables
     function clear() {
         inputArr.length = 0;
         currentlyDisplayed = '';
@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         num1 = undefined;
         num2 = undefined;
         operator = undefined;
+        inputArr = [0];
     }
 
     const display = document.getElementById('display');
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let operator;
     let result;
     let currentlyDisplayed = '';
-    inputArr = [0];
+    let inputArr = [0];
 
     digits.forEach(digit => {
         digit.addEventListener('click', () => {
@@ -70,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     equalsButton.addEventListener('click', () => {
-        inputStr = inputArr.join('');
+        let inputStr = inputArr.join('');
         // If no symbol has been entered don't continue
         if (!(inputStr.includes('+') || inputStr.includes('-') || inputStr.includes('X') || inputStr.includes('/'))) {
             return;
@@ -78,10 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
         currentlyDisplayed = '';
         inputArr = inputStr.split(/([+\-X/])/);
         // If no second digit entered assume second digit is same as first
-        if (inputArr[2] == undefined && inputArr[1]) {
+        if (inputArr[2] == undefined || inputArr[2] == '') { 
+            console.log(inputArr);  
+            inputArr.splice(2);    
             inputArr.push((inputArr[0]));
         }
-        while (inputArr.length > 1) {
+        while (inputArr.length > 2) {
             num1 = inputArr[0];
             num2 = inputArr[2];
             operator = inputArr[1];
