@@ -40,6 +40,71 @@ document.addEventListener('DOMContentLoaded', function() {
         inputArr = [0];
     }
 
+    function operateOnAllElements() {
+        while (inputArr.length > 1) {
+            let firstNumberIndex = -1; // Initialize the index of the first number
+            console.log(inputArr);
+            // Loop through the array starting from index 2
+            for (let i = 2; i < inputArr.length; i++) {
+                // Check if the current element is a number
+                if (!isNaN(parseFloat(inputArr[i]))) {
+                    // If it's a number, store its index and break out of the loop
+                    firstNumberIndex = i;
+                    break;
+                }
+            }
+
+            // If last digit entered was an operator, assume the next number is the same as the preceding number
+            if (firstNumberIndex === -1) {
+                inputArr.splice(2, inputArr.length - 2, inputArr[0]);
+                return operate(inputArr[0], inputArr[0], lastSymbolInput);
+            }
+
+
+
+            num1 = inputArr[0];
+            operator = inputArr[firstNumberIndex - 1];
+            inputArr.splice(1, firstNumberIndex - 2);
+            console.log(inputArr);
+            num2 = inputArr[2];
+            
+    
+            // Check if user is dividing by 0
+            if (num2 == 0 && operator == '/') {
+                display.innerHTML = 'Not so fast, buddy';
+                inputArr.length = 0;
+                return;
+            }
+    
+            result = operate(num1, num2, operator);
+            inputArr.splice(0, 3, result);  // Replace the first 3 elements with the result
+            // Round result to 7 decimals
+            result = parseFloat(result.toFixed(7));
+        }
+        console.log(inputArr);
+        return result;
+    }
+
+
+    function getResult() {
+        let inputStr = inputArr.join('');
+        // If no symbol and/or no number has been entered don't continue
+        if (!(inputStr.includes('+') || inputStr.includes('-') || inputStr.includes('X') || inputStr.includes('/'))) {
+            return;
+        }
+        currentlyDisplayed = '';
+        
+        // Split array on "+, -, X, /" thereby joining all numbers on either side of an operator together
+        inputArr = inputStr.split(/([+\-X/])/);
+
+        // Filter out whitespace in the arr
+        inputArr = inputArr.filter(element => element.trim() !== '');
+
+        result = operateOnAllElements();
+        display.innerHTML = result;
+    };
+
+
     const display = document.getElementById('display');
     const digits = document.querySelectorAll('.digit');
     const operands = document.querySelectorAll('.operand');
@@ -52,6 +117,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let result;
     let currentlyDisplayed = '';
     let inputArr = [0];
+    let lastSymbolInput;
+    
 
     digits.forEach(digit => {
         digit.addEventListener('click', () => {
@@ -66,43 +133,13 @@ document.addEventListener('DOMContentLoaded', function() {
         operand.addEventListener('click', () => {
             currentlyDisplayed = '';
             display.innerHTML = operand.innerHTML;
+            lastSymbolInput = operand.innerHTML;
             inputArr.push(operand.innerHTML);
         });
     });
     
     equalsButton.addEventListener('click', () => {
-        let inputStr = inputArr.join('');
-        // If no symbol has been entered don't continue
-        if (!(inputStr.includes('+') || inputStr.includes('-') || inputStr.includes('X') || inputStr.includes('/'))) {
-            return;
-        }
-        currentlyDisplayed = '';
-        inputArr = inputStr.split(/([+\-X/])/);
-        // If no second digit entered assume second digit is same as first
-        if (inputArr[2] == undefined || inputArr[2] == '') { 
-            console.log(inputArr);  
-            inputArr.splice(2);    
-            inputArr.push((inputArr[0]));
-        }
-        while (inputArr.length > 2) {
-            num1 = inputArr[0];
-            num2 = inputArr[2];
-            operator = inputArr[1];
-            // Check if user is dividing by 0
-            if (num2 == 0 && operator == '/') {
-                display.innerHTML = 'Not so fast, buddy';
-                inputArr.length = 0;
-                return;
-            }
-            result = operate(num1, num2, operator);
-            for (let i = 0; i < 3; i++) {
-                inputArr.shift();
-            }
-            // Round result to 7 decimals
-            result = parseFloat(result.toFixed(7));
-            inputArr.unshift(result);
-        }
-        display.innerHTML = result;
+        getResult();
     });
 
     clearButton.addEventListener('click', () => {
