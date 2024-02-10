@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // If last digit entered was an operator, assume the next number is the same as the preceding number(s)
             if (firstNumberIndex === -1) {
                 inputArr.splice(2, inputArr.length - 2, inputArr[0]);
-                return operate(inputArr[0], inputArr[0], lastSymbolInput);
             }
 
             num1 = parseFloat(inputArr[0]);
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
             num2 = parseFloat(inputArr[2]);
     
             // Check if user is dividing by 0
-            if (num2 == 0 && operator == '/') {
+            if (parseFloat(num2) == 0 && operator == '/') {
                 clear();
                 return 'Not today';
             }
