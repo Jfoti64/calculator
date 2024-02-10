@@ -1,35 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    function add(num1, num2) {
-        return parseInt(num1) + parseInt(num2);
-    }
+    // Math operations
+    const operations = {
+        '+': (num1, num2) => num1 + num2,
+        '-': (num1, num2) => num1 - num2,
+        'X': (num1, num2) => num1 * num2,
+        '/': (num1, num2) => num1 / num2,
+    };
 
-    function subtract(num1, num2) {
-        return num1 - num2;
-    }
-
-    function multiply(num1, num2) {
-        return num1 * num2;
-    }
-
-    function divide(num1, num2) {
-        return num1 / num2;
-    }
-
-    function operate(num1, num2, operator) {
-        switch (operator) {
-            case '+':
-                return add(num1, num2);
-            case '-':
-                return subtract(num1, num2);
-            case 'X':
-                return multiply(num1, num2);
-            case '/':
-                return divide(num1, num2);
-        }
-    }
-
-    // Reset array and variables
+    
+    // Reset the calculator
     function clear() {
         inputArr.length = 0;
         currentlyDisplayed = '';
@@ -40,10 +20,16 @@ document.addEventListener('DOMContentLoaded', function() {
         inputArr = [0];
     }
 
+
+    // Perform operation on two numbers
+    function operate(num1, num2, operator) {
+        return operations[operator](num1, num2);
+    }
+
+
     function operateOnAllElements() {
         while (inputArr.length > 1) {
             let firstNumberIndex = -1; // Initialize the index of the first number
-            console.log(inputArr);
             // Loop through the array starting from index 2
             for (let i = 2; i < inputArr.length; i++) {
                 // Check if the current element is a number
@@ -54,26 +40,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            // If last digit entered was an operator, assume the next number is the same as the preceding number
+            // If last digit entered was an operator, assume the next number is the same as the preceding number(s)
             if (firstNumberIndex === -1) {
                 inputArr.splice(2, inputArr.length - 2, inputArr[0]);
                 return operate(inputArr[0], inputArr[0], lastSymbolInput);
             }
 
-
-
-            num1 = inputArr[0];
+            num1 = parseFloat(inputArr[0]);
             operator = inputArr[firstNumberIndex - 1];
+            // Delete everything between the first number and the last operator input
             inputArr.splice(1, firstNumberIndex - 2);
-            console.log(inputArr);
-            num2 = inputArr[2];
-            
+            num2 = parseFloat(inputArr[2]);
     
             // Check if user is dividing by 0
             if (num2 == 0 && operator == '/') {
-                display.innerHTML = 'Not so fast, buddy';
-                inputArr.length = 0;
-                return;
+                clear();
+                return 'Not today';
             }
     
             result = operate(num1, num2, operator);
@@ -81,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Round result to 7 decimals
             result = parseFloat(result.toFixed(7));
         }
-        console.log(inputArr);
         return result;
     }
 
